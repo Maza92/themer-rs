@@ -150,3 +150,138 @@ fn format_rgb_output(r: u8, g: u8, b: u8, alpha: f64) -> String {
         format!("rgba({}, {}, {}, {:.2})", r, g, b, alpha)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde_json::json;
+
+    #[test]
+    fn test_hex_hash_filter_success() {
+        let result = hex_hash(&Value::String("FF5733".to_string()), &HashMap::new());
+        assert_eq!(result.unwrap(), json!("#FF5733"));
+
+        let result = hex_hash(&json!("000000"), &HashMap::new());
+        assert_eq!(result.unwrap(), json!("#000000"));
+    }
+
+    #[test]
+    fn test_hex_hash_filter_invalid_type() {
+        let result = hex_hash(&Value::Number(123.into()), &HashMap::new());
+        assert!(result.is_err());
+        let err_msg = result.unwrap_err().to_string();
+        assert!(err_msg.contains("Invalid type"));
+    }
+
+    #[test]
+    fn test_rgb_filter_basic_colors() {
+        // Without hash prefix
+        let result = rgb(&json!("FF5733"), &HashMap::new());
+        assert_eq!(result.unwrap(), json!("rgb(255, 87, 51)"));
+
+        // With hash prefix
+        let result = rgb(&json!("#2E8B57"), &HashMap::new());
+        assert_eq!(result.unwrap(), json!("rgb(46, 139, 87)"));
+
+        // Black and white
+        let result = rgb(&json!("000000"), &HashMap::new());
+        assert_eq!(result.unwrap(), json!("rgb(0, 0, 0)"));
+
+        let result = rgb(&json!("FFFFFF"), &HashMap::new());
+        assert_eq!(result.unwrap(), json!("rgb(255, 255, 255)"));
+    }
+
+    #[test]
+    fn test_rgb_filter_with_alpha() {
+        let mut args = HashMap::new();
+        args.insert("a".to_string(), json!(0.5));
+        let result = rgb(&json!("4169E1"), &args);
+        assert_eq!(result.unwrap(), json!("rgba(65, 105, 225, 0.50)"));
+
+        // Alpha = 0.0
+        let mut args = HashMap::new();
+        args.insert("a".to_string(), json!(0.0));
+        let result = rgb(&json!("FFFFFF"), &args);
+        assert_eq!(result.unwrap(), json!("rgba(255, 255, 255, 0.00)"));
+
+        // Alpha = 1.0 should omit alpha
+        let mut args = HashMap::new();
+        args.insert("a".to_string(), json!(1.0));
+        let result = rgb(&json!("FFFFFF"), &args);
+        assert_eq!(result.unwrap(), json!("rgb(255, 255, 255)"));
+    }
+
+    #[test]
+    fn test_rgb_filter_invalid_type() {
+        let result = rgb(&json!(12345), &HashMap::new());
+        assert!(result.is_err());
+        assert!(result.unwrap_err().to_string().contains("Invalid type"));
+    }
+
+    #[test]
+    fn test_rgb_filter_invalid_length() {
+        let result = rgb(&json!("FFF"), &HashMap::new());
+        assert!(result.is_err());
+        assert!(
+            result
+                .unwrap_err()
+                .to_string()
+                .contains("Invalid hex code length")
+        );
+
+        let result = rgb(&json!("FF5733AA"), &HashMap::new());
+        assert!(result.is_err());
+        assert!(
+            result
+                .unwrap_err()
+                .to_string()
+                .contains("Invalid hex code length")
+        );
+    }
+
+    #[test]
+    fn test_rgb_filter_invalid_hex_digits() {
+        let result = rgb(&json!("GGGGGG"), &HashMap::new());
+        assert!(result.is_err());
+        assert!(
+            result
+                .unwrap_err()
+                .to_string()
+                .contains("Invalid hex value")
+        );
+
+        let result = rgb(&json!("12345Z"), &HashMap::new());
+        assert!(result.is_err());
+        assert!(
+            result
+                .unwrap_err()
+                .to_string()
+                .contains("Invalid hex value")
+        );
+    }
+
+    #[test]
+    fn test_rgb_filter_invalid_alpha_range() {
+        let mut args = HashMap::new();
+        args.insert("a".to_string(), json!(1.5));
+        let result = rgb(&json!("FFFFFF"), &args);
+        assert!(result.is_err());
+        assert!(
+            result
+                .unwrap_err()
+                .to_string()
+                .contains("must be between 0.0 and 1.0")
+        );
+
+        let mut args = HashMap::new();
+        args.insert("a".to_string(), json!(-0.5));
+        let result = rgb(&json!("FFFFFF"), &args);
+        assert!(result.is_err());
+        assert!(
+            result
+                .unwrap_err()
+                .to_string()
+                .contains("must be between 0.0 and 1.0")
+        );
+    }
+}
