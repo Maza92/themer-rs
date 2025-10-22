@@ -1,4 +1,11 @@
 use serde::{Deserialize, Serialize};
+use thiserror::Error;
+
+#[derive(Debug, Error)]
+pub enum ColorError {
+    #[error("Invalid hex color format: {0}")]
+    InvalidFormat(String),
+}
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Base16 {
@@ -24,6 +31,30 @@ pub struct Base16 {
     pub base0e: String,
     #[serde(rename = "base0F")]
     pub base0f: String,
+}
+
+impl Base16 {
+    pub fn colors(&self) -> impl Iterator<Item = &str> {
+        [
+            self.base00.as_str(),
+            self.base01.as_str(),
+            self.base02.as_str(),
+            self.base03.as_str(),
+            self.base04.as_str(),
+            self.base05.as_str(),
+            self.base06.as_str(),
+            self.base07.as_str(),
+            self.base08.as_str(),
+            self.base09.as_str(),
+            self.base0a.as_str(),
+            self.base0b.as_str(),
+            self.base0c.as_str(),
+            self.base0d.as_str(),
+            self.base0e.as_str(),
+            self.base0f.as_str(),
+        ]
+        .into_iter()
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -57,6 +88,14 @@ pub struct Base30 {
     pub lightbg: String,
 }
 
+#[derive(Debug, Error)]
+pub enum PaletteError {
+    #[error("Palette is missing base_16 colors")]
+    MissingBase16,
+    #[error("Palette is missing base_30 colors")]
+    MissingBase30,
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Palette {
     pub name: String,
@@ -69,15 +108,11 @@ pub struct Palette {
 }
 
 impl Palette {
-    pub fn base16(&self) -> &Base16 {
-        self.base_16
-            .as_ref()
-            .expect("Palette must have either base_16 or unsupported")
+    pub fn base16(&self) -> Result<&Base16, PaletteError> {
+        self.base_16.as_ref().ok_or(PaletteError::MissingBase16)
     }
 
-    pub fn base30(&self) -> &Base30 {
-        self.base_30
-            .as_ref()
-            .expect("Palette must have either base_30 or unsupported")
+    pub fn base30(&self) -> Result<&Base30, PaletteError> {
+        self.base_30.as_ref().ok_or(PaletteError::MissingBase30)
     }
 }
