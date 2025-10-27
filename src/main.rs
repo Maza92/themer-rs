@@ -16,5 +16,6 @@ fn main() -> Result<()> {
 
     match cli.command {
         Commands::List(list) => commands::list::execute(list.format.as_deref()),
+        Commands::Apply { palette } => commands::apply::execute(&palette),
     }
 }

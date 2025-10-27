@@ -16,4 +16,5 @@ pub struct List {
 #[derive(Subcommand)]
 pub enum Commands {
     List(List),
+    Apply { palette: String },
 }

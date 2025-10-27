@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
-    pub active_pallette: String,
+    pub active_palette: String,
     pub targets: Vec<Target>,
 }
 
@@ -30,7 +30,7 @@ mod tests {
     fn test_config_serialization() {
         // Arrange
         let config = Config {
-            active_pallette: "gruvbox".to_string(),
+            active_palette: "gruvbox".to_string(),
             targets: vec![Target {
                 name: "neovim".to_string(),
                 template: "nvim".to_string(),
@@ -45,7 +45,7 @@ mod tests {
         let deserialized: Config = toml::from_str(&serialized).unwrap();
 
         // Assert
-        assert_eq!(config.active_pallette, deserialized.active_pallette);
+        assert_eq!(config.active_palette, deserialized.active_palette);
         assert_eq!(config.targets.len(), deserialized.targets.len());
     }
 
@@ -90,7 +90,7 @@ mod tests {
     fn test_empty_config() {
         // Arrange
         let config = Config {
-            active_pallette: String::new(),
+            active_palette: String::new(),
             targets: vec![],
         };
 
@@ -99,7 +99,7 @@ mod tests {
         let deserialized: Config = toml::from_str(&serialized).unwrap();
 
         // Assert
-        assert_eq!(deserialized.active_pallette, "");
+        assert_eq!(deserialized.active_palette, "");
         assert_eq!(deserialized.targets.len(), 0);
     }
 
