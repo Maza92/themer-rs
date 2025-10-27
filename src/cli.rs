@@ -13,6 +13,12 @@ pub struct List {
     pub format: Option<String>,
 }
 
+#[derive(Parser, Debug)]
+pub struct ListTargets {
+    #[arg(long)]
+    pub format: Option<String>,
+}
+
 #[derive(Parser)]
 pub struct Validate {
     pub target: Option<String>,
@@ -21,6 +27,7 @@ pub struct Validate {
 #[derive(Subcommand)]
 pub enum Commands {
     List(List),
+    ListTargets(ListTargets),
     Apply { palette: String },
     Validate(Validate),
 }
