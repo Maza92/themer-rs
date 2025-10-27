@@ -62,7 +62,7 @@ mod tests {
 
     fn create_valid_config_content() -> String {
         r#"
-active_pallette = "nord"
+active_palette = "nord"
 
 [[targets]]
 name = "alacritty"
@@ -112,7 +112,7 @@ reload_cmd = "touch ~/.config/alacritty/alacritty.toml"
         // Assert
         assert!(result.is_ok());
         let config = result.unwrap();
-        assert_eq!(config.active_pallette, "nord");
+        assert_eq!(config.active_palette, "nord");
         assert_eq!(config.targets.len(), 1);
         assert_eq!(config.targets[0].name, "alacritty");
     }
@@ -155,7 +155,7 @@ reload_cmd = "touch ~/.config/alacritty/alacritty.toml"
         let temp_dir = create_test_config_dir();
         let loader = create_test_loader(&temp_dir);
         let config = Config {
-            active_pallette: "catppuccin".to_string(),
+            active_palette: "catppuccin".to_string(),
             targets: vec![Target {
                 name: "kitty".to_string(),
                 template: "kitty.tmpl".to_string(),
@@ -184,7 +184,7 @@ reload_cmd = "touch ~/.config/alacritty/alacritty.toml"
         let temp_dir = create_test_config_dir();
         let loader = create_test_loader(&temp_dir);
         let original_config = Config {
-            active_pallette: "dracula".to_string(),
+            active_palette: "dracula".to_string(),
             targets: vec![
                 Target {
                     name: "zsh".to_string(),
@@ -208,10 +208,7 @@ reload_cmd = "touch ~/.config/alacritty/alacritty.toml"
         let loaded_config = loader.load().unwrap();
 
         // Assert
-        assert_eq!(
-            original_config.active_pallette,
-            loaded_config.active_pallette
-        );
+        assert_eq!(original_config.active_palette, loaded_config.active_palette);
         assert_eq!(original_config.targets.len(), loaded_config.targets.len());
         assert_eq!(
             original_config.targets[0].name,
@@ -229,7 +226,7 @@ reload_cmd = "touch ~/.config/alacritty/alacritty.toml"
         let temp_dir = create_test_config_dir();
         let loader = create_test_loader(&temp_dir);
         let config = Config {
-            active_pallette: String::new(),
+            active_palette: String::new(),
             targets: vec![],
         };
 

@@ -13,8 +13,14 @@ pub struct List {
     pub format: Option<String>,
 }
 
+#[derive(Parser)]
+pub struct Validate {
+    pub target: Option<String>,
+}
+
 #[derive(Subcommand)]
 pub enum Commands {
     List(List),
     Apply { palette: String },
+    Validate(Validate),
 }
