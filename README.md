@@ -1,4 +1,8 @@
-# Themer-rs
+<h1 align="center">Themer-rs</h1>
+
+<p align="center">
+  <img src="assets/preview.gif" alt="themer preview" width="600"/>
+</p>
 
 A Rust-based CLI tool for centralized color palette management across Linux applications.
 
