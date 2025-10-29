@@ -267,6 +267,8 @@ reload_cmd = "hyprctl reload &"
 
 - [Waybar](./examples/templates/waybar/) – supports `include` mode
 
+- [Foot](./examples/templates/foot/) – supports `include` mode
+
 _(More coming soon!)_
 
 ## Credits
