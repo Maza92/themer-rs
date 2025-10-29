@@ -275,6 +275,8 @@ reload_cmd = "hyprctl reload &"
 
 - [Alacritty](./examples/templates/alacritty/) – supports `include` mode
 
+- [Kitty](./examples/templates/kitty/) – supports `include` mode
+
 _(More coming soon!)_
 
 ## Credits
