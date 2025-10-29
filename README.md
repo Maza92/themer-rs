@@ -269,6 +269,8 @@ reload_cmd = "hyprctl reload &"
 
 - [Foot](./examples/templates/foot/) – supports `include` mode
 
+- [Gowall](./examples/templates/gowall/) – supports `replace` mode
+
 _(More coming soon!)_
 
 ## Credits
