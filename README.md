@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  🎨 <strong href="./examples/palettes/">50+ curated themes included</strong>
+  🎨 <strong><a href="./examples/palettes/">50+ curated themes included</a></strong>
 </p>
 
 ## Overview
@@ -262,6 +262,12 @@ reload_cmd = "hyprctl reload &"
 - Reload commands with `&` suffix run in background
 - Include mode preserves template file extension
 - Validation uses dummy palette with all fields populated
+
+## Example Programs
+
+- [Waybar](./examples/templates/waybar/) – supports `include` mode
+
+_(More coming soon!)_
 
 ## Credits
 
