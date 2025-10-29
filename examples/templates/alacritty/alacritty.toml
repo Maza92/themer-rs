@@ -1,0 +1,29 @@
+# Palette: {{ name }}
+
+[colors.primary]
+background = "{{ base00 | hex_hash }}"
+foreground = "{{ base05 | hex_hash }}"
+
+[colors.cursor]
+text = "{{ base00 | hex_hash }}"
+cursor = "{{ base05 | hex_hash }}"
+
+[colors.normal]
+black = "{{ base00 | hex_hash }}"
+red = "{{ base08 | hex_hash }}"
+green = "{{ base0B | hex_hash }}"
+yellow = "{{ base0A | hex_hash }}"
+blue = "{{ base0D | hex_hash }}"
+magenta = "{{ base0E | hex_hash }}"
+cyan = "{{ base0C | hex_hash }}"
+white = "{{ base05 | hex_hash }}"
+
+[colors.bright]
+black = "{{ base03 | hex_hash }}"
+red = "{{ base08 | hex_hash }}"
+green = "{{ base0B | hex_hash }}"
+yellow = "{{ base0A | hex_hash }}"
+blue = "{{ base0D | hex_hash }}"
+magenta = "{{ base0E | hex_hash }}"
+cyan = "{{ base0C | hex_hash }}"
+white = "{{ base07 | hex_hash }}"

@@ -267,9 +267,13 @@ reload_cmd = "hyprctl reload &"
 
 - [Waybar](./examples/templates/waybar/) – supports `include` mode
 
+- [Gowall](./examples/templates/gowall/) – supports `replace` mode
+
+### Terminals
+
 - [Foot](./examples/templates/foot/) – supports `include` mode
 
-- [Gowall](./examples/templates/gowall/) – supports `replace` mode
+- [Alacritty](./examples/templates/alacritty/) – supports `include` mode
 
 _(More coming soon!)_
 
