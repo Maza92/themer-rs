@@ -2,7 +2,13 @@
 
 <video src="https://github.com/user-attachments/assets/8f8d4f5e-8019-4193-bc48-fb974548d9e9" autoplay loop muted playsinline width="600"></video>
 
-A Rust-based CLI tool for centralized color palette management across Linux applications.
+<p align="center">
+  <strong>A Rust-based CLI tool for centralized color palette management across Linux applications.</strong>
+</p>
+
+<p align="center">
+  🎨 <strong href="./examples/palettes/">50+ curated themes included</strong>
+</p>
 
 ## Overview
 
@@ -256,3 +262,10 @@ reload_cmd = "hyprctl reload &"
 - Reload commands with `&` suffix run in background
 - Include mode preserves template file extension
 - Validation uses dummy palette with all fields populated
+
+## Credits
+
+These color palettes are ported from [NvChad's base46 theme collection](https://github.com/NvChad/base46).
+
+- **Color system**: NvChad's base30 semantic naming
+- **Format adaptation**: Converted from Lua to JSON for universal compatibility
