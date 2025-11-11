@@ -1,0 +1,53 @@
+@define-color accent_color {{ base0D | hex_hash }};
+@define-color accent_bg_color {{ base0D | hex_hash }};
+@define-color accent_fg_color {{ base00 | hex_hash }};
+@define-color destructive_color {{ base08 | hex_hash }};
+@define-color destructive_bg_color {{ base08 | hex_hash }};
+@define-color destructive_fg_color {{ base07 | hex_hash }};
+@define-color success_color {{ base0B | hex_hash }};
+@define-color success_bg_color {{ base0B | hex_hash }};
+@define-color success_fg_color {{ base07 | hex_hash }};
+@define-color warning_color {{ base0A | hex_hash }};
+@define-color warning_bg_color {{ base0A | hex_hash }};
+@define-color warning_fg_color {{ base00 | hex_hash }};
+@define-color error_color {{ base08 | hex_hash }};
+@define-color error_bg_color {{ base08 | hex_hash }};
+@define-color error_fg_color {{ base07 | hex_hash }};
+
+@define-color window_bg_color {{ base00 | hex_hash }};
+@define-color window_fg_color {{ base05 | hex_hash }};
+@define-color view_bg_color {{ base00 | hex_hash }};
+@define-color view_fg_color {{ base05 | hex_hash }};
+@define-color headerbar_bg_color {{ base00 | hex_hash }};
+@define-color headerbar_fg_color {{ base05 | hex_hash }};
+@define-color headerbar_backdrop_color {{ base00 | hex_hash }};
+@define-color thumbnail_bg_color {{ base00 | hex_hash }};
+@define-color thumbnail_fg_color {{ base05 | hex_hash }};
+@define-color dialog_bg_color {{ base00 | hex_hash }};
+@define-color dialog_fg_color {{ base05 | hex_hash }};
+
+@define-color sidebar_bg_color {{ base01 | hex_hash }};
+@define-color sidebar_fg_color {{ base05 | hex_hash }};
+@define-color sidebar_backdrop_color {{ base01 | hex_hash }};
+@define-color card_bg_color {{ base01 | hex_hash }};
+@define-color card_fg_color {{ base05 | hex_hash }};
+@define-color popover_bg_color {{ base01 | hex_hash }};
+@define-color popover_fg_color {{ base05 | hex_hash }};
+
+@define-color headerbar_border_color {{ base03 | hex_hash }};
+@define-color headerbar_shade_color {{ base02 | hex_hash }};
+@define-color card_shade_color {{ base02 | hex_hash }};
+@define-color shade_color {{ base02 | hex_hash }};
+@define-color scrollbar_outline_color {{ base03 | hex_hash }};
+
+.navigation-sidebar {
+  background-color: {{ base01 | hex_hash }};
+}
+
+switch:checked {
+  background-color: {{ base0D | hex_hash }};
+}
+
+switch:checked slider {
+  background-color: {{ base02 | hex_hash }};
+}
