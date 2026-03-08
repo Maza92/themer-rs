@@ -271,6 +271,8 @@ reload_cmd = "hyprctl reload &"
 
 - [GTK](./examples/templates/gtk/) – supports `include` mode
 
+- [NvChad](./examples/templates/nvchad/) – supports `replace` mode
+
 ### Terminals
 
 - [Foot](./examples/templates/foot/) – supports `include` mode
