@@ -274,6 +274,12 @@ reload_cmd = "hyprctl reload &"
 
 - [NvChad](./examples/templates/nvchad/) – supports `replace` mode
 
+- [Btop](./examples/templates/btop/) – supports `replace` mode
+
+- [Fish](./examples/templates/fish/) – supports `replace` mode
+
+- [Starship](./examples/templates/starship/) – supports `replace` mode
+
 ### Terminals
 
 - [Foot](./examples/templates/foot/) – supports `include` mode
