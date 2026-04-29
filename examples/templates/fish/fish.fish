@@ -1,0 +1,20 @@
+set fish_color_normal {{ base05 }}
+set fish_color_command {{ blue }}
+set fish_color_keyword {{ pink }}
+set fish_color_quote {{ green }}
+set fish_color_redirection {{ purple }}
+set fish_color_end {{ orange }}
+set fish_color_error {{ red }}
+set fish_color_param {{ base05 }}
+set fish_color_valid_path --underline
+set fish_color_option {{ cyan }}
+set fish_color_comment {{ grey }}
+set fish_color_selection --background={{ one_bg3 }}
+set fish_color_search_match --background={{ one_bg3 }}
+set fish_color_operator {{ pink }}
+set fish_color_escape {{ red }}
+set fish_color_autosuggestion {{ grey_fg }}
+set fish_color_cwd {{ blue }}
+set fish_color_cwd_root {{ red }}
+set fish_color_user {{ green }}
+set fish_color_host {{ yellow }}
