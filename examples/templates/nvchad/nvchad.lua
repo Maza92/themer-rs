@@ -30,8 +30,8 @@ M.base_30 = {
 	orange = "{{ orange | hex_hash }}",
 	cyan = "{{ cyan | hex_hash }}",
 	statusline_bg = "{{ one_bg | hex_hash }}",
-	lightbg = "{{ lightbg | hex_hash }}",
-	pmenu_bg = "{{ darker_black | hex_hash }}",
+	lightbg = "{{ base01 | hex_hash }}",
+	pmenu_bg = "{{ green | hex_hash }}",
 	folder_bg = "{{ blue | hex_hash }}",
 }
 
