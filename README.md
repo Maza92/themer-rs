@@ -194,8 +194,9 @@ themer apply gruvbox
 
 # List available palettes
 themer list
-themer list --format json   # JSON output
-themer list --format plain  # Newline-separated
+themer list --format json     # JSON array of palette names
+themer list --format plain    # Newline-separated
+themer list --format preview  # JSON with display names and preview colors
 
 # List configured targets
 themer list-targets

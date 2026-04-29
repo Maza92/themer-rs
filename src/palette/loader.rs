@@ -61,7 +61,32 @@ impl PaletteLoader {
 
         Ok(palettes)
     }
+
+    pub fn get_preview_colors(&self, palette_name: &str) -> Result<Vec<String>> {
+        let palette = self.load(palette_name)?;
+        Ok(Self::extract_significant_colors(&palette))
+    }
+
+    fn extract_significant_colors(palette: &Palette) -> Vec<String> {
+        if let Some(base16) = &palette.base_16 {
+            vec![
+                format!("#{}", base16.base01),
+                format!("#{}", base16.base02),
+                format!("#{}", base16.base03),
+                format!("#{}", base16.base04),
+                format!("#{}", base16.base08),
+                format!("#{}", base16.base09),
+                format!("#{}", base16.base0a),
+                format!("#{}", base16.base0b),
+                format!("#{}", base16.base0c),
+                format!("#{}", base16.base0d),
+            ]
+        } else {
+            Vec::new()
+        }
+    }
 }
+
 fn extract_palette_name(path: &Path) -> Result<String> {
     use serde::Deserialize;
 
@@ -78,6 +103,7 @@ fn extract_palette_name(path: &Path) -> Result<String> {
 
     Ok(name_only.name)
 }
+
 
 #[derive(Serialize, Debug, Clone, PartialEq, Eq)]
 pub struct PaletteInfo {
