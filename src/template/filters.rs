@@ -79,14 +79,17 @@ pub fn hex_hash(value: &Value, _args: &HashMap<String, Value>) -> TeraResult<Val
 /// * `value` - A hex color string (with or without '#' prefix)
 /// * `args` - Optional arguments:
 ///   - `a`: Alpha channel (0.0-1.0), defaults to 1.0
+///   - `toml`: Boolean, if true outputs in TOML array format [r, g, b] or [r, g, b, a]
 ///
 /// # Examples
 ///
 /// In a Tera template:
 /// ```text
-/// {{ "FF5733" | rgb }}           -> "rgb(255, 87, 51)"
-/// {{ "#2E8B57" | rgb }}          -> "rgb(46, 139, 87)"
-/// {{ "4169E1" | rgb(a=0.5) }}    -> "rgba(65, 105, 225, 0.50)"
+/// {{ "FF5733" | rgb }}                -> "rgb(255, 87, 51)"
+/// {{ "#2E8B57" | rgb }}               -> "rgb(46, 139, 87)"
+/// {{ "4169E1" | rgb(a=0.5) }}         -> "rgba(65, 105, 225, 0.50)"
+/// {{ "4169E1" | rgb(toml=true) }}      -> "[65, 105, 225]"
+/// {{ "4169E1" | rgb(a=0.5, toml=true) }} -> "[65, 105, 225, 0.50]"
 /// ```
 ///
 /// # Errors
@@ -98,6 +101,7 @@ pub fn hex_hash(value: &Value, _args: &HashMap<String, Value>) -> TeraResult<Val
 /// - Alpha value is outside [0.0, 1.0] range
 pub fn rgb(value: &Value, args: &HashMap<String, Value>) -> TeraResult<Value> {
     let alpha = args.get("a").and_then(|v| v.as_f64()).unwrap_or(1.0);
+    let toml_format = args.get("toml").and_then(|v| v.as_bool()).unwrap_or(false);
 
     if !(0.0..=1.0).contains(&alpha) {
         return Err(ColorFilterError::AlphaRange { value: alpha }.into());
@@ -119,8 +123,8 @@ pub fn rgb(value: &Value, args: &HashMap<String, Value>) -> TeraResult<Value> {
     let r = parse_hex_component(hex_code, 0..2, "Red")?;
     let g = parse_hex_component(hex_code, 2..4, "Green")?;
     let b = parse_hex_component(hex_code, 4..6, "Blue")?;
-
-    let output = format_rgb_output(r, g, b, alpha);
+ 
+    let output = format_rgb_output(r, g, b, alpha, toml_format);
     Ok(Value::String(output))
 }
 
@@ -141,10 +145,17 @@ fn parse_hex_component(
 }
 
 #[inline]
-fn format_rgb_output(r: u8, g: u8, b: u8, alpha: f64) -> String {
+fn format_rgb_output(r: u8, g: u8, b: u8, alpha: f64, toml_format: bool) -> String {
     const EPSILON: f64 = 1e-10;
+    let is_opaque = (alpha - 1.0).abs() < EPSILON;
 
-    if (alpha - 1.0).abs() < EPSILON {
+    if toml_format {
+        if is_opaque {
+            format!("[{}, {}, {}]", r, g, b)
+        } else {
+            format!("[{}, {}, {}, {:.2}]", r, g, b, alpha)
+        }
+    } else if is_opaque {
         format!("rgb({}, {}, {})", r, g, b)
     } else {
         format!("rgba({}, {}, {}, {:.2})", r, g, b, alpha)
@@ -209,6 +220,22 @@ mod tests {
         args.insert("a".to_string(), json!(1.0));
         let result = rgb(&json!("FFFFFF"), &args);
         assert_eq!(result.unwrap(), json!("rgb(255, 255, 255)"));
+    }
+ 
+    #[test]
+    fn test_rgb_filter_toml_format() {
+        // Basic TOML RGB
+        let mut args = HashMap::new();
+        args.insert("toml".to_string(), json!(true));
+        let result = rgb(&json!("FF5733"), &args);
+        assert_eq!(result.unwrap(), json!("[255, 87, 51]"));
+ 
+        // TOML RGBA
+        let mut args = HashMap::new();
+        args.insert("toml".to_string(), json!(true));
+        args.insert("a".to_string(), json!(0.5));
+        let result = rgb(&json!("4169E1"), &args);
+        assert_eq!(result.unwrap(), json!("[65, 105, 225, 0.50]"));
     }
 
     #[test]

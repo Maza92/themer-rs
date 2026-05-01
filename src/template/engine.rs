@@ -20,6 +20,7 @@ impl TemplateEngine {
 
         tera.register_filter("hex_hash", filters::hex_hash);
         tera.register_filter("rgb", filters::rgb);
+        tera.register_filter("rgba", filters::rgb);
 
         Self { tera }
     }
