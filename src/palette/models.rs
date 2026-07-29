@@ -27,8 +27,6 @@ pub struct Base16 {
     pub base0f: String,
 }
 
-
-
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Base30 {
     pub white: String,
