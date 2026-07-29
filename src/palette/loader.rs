@@ -104,7 +104,6 @@ fn extract_palette_name(path: &Path) -> Result<String> {
     Ok(name_only.name)
 }
 
-
 #[derive(Serialize, Debug, Clone, PartialEq, Eq)]
 pub struct PaletteInfo {
     pub filename: String,

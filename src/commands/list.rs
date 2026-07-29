@@ -1,7 +1,7 @@
 use anyhow::Result;
 
 use crate::config::loader::ConfigLoader;
-use crate::output::output;
+use crate::output::formatter;
 use crate::palette::loader::PaletteLoader;
 
 pub fn execute(format: Option<&str>) -> Result<()> {
@@ -14,7 +14,7 @@ pub fn execute(format: Option<&str>) -> Result<()> {
         Some("json") => output_json(&palettes)?,
         Some("preview") => output_preview(&palette_loader, &palettes)?,
         Some(unknown) => {
-            output::warning(&format!("Unknown format '{}', using default", unknown));
+            formatter::warning(&format!("Unknown format '{}', using default", unknown));
             output_default(&palettes)
         }
         None => output_default(&palettes),
@@ -66,21 +66,20 @@ fn output_preview(
 }
 
 fn output_default(palettes: &[crate::palette::loader::PaletteInfo]) {
-    output::header("Available palettes:");
+    formatter::header("Available palettes:");
 
     if palettes.is_empty() {
-        output::warning("No palettes found");
+        formatter::warning("No palettes found");
         return;
     }
 
     for info in palettes {
-        output::item(Some("Palette"), &info.filename, info.name.as_deref());
+        formatter::item(Some("Palette"), &info.filename, info.name.as_deref());
     }
 }
 
 fn format_display_name(name: &str) -> String {
-    name.replace('-', " ")
-        .replace('_', " ")
+    name.replace(['-', '_'], " ")
         .split_whitespace()
         .map(|word| {
             let mut chars = word.chars();

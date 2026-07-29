@@ -101,6 +101,7 @@ impl TemplateEngine {
         Ok(self.tera.render(template_name, context)?)
     }
 
+    #[allow(dead_code)]
     pub fn render_palette(
         &mut self,
         template_name: &str,
