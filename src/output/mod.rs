@@ -1,1 +1,1 @@
-pub mod output;
+pub mod formatter;

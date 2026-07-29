@@ -4,7 +4,7 @@ use std::path::Path;
 
 use crate::config::loader::ConfigLoader;
 use crate::config::models::Target;
-use crate::output::output;
+use crate::output::formatter;
 use crate::palette::models::{Base16, Base30, Palette};
 use crate::template::engine::TemplateEngine;
 
@@ -19,10 +19,10 @@ pub fn execute(target_name: Option<&str>) -> Result<()> {
 }
 
 fn validate_all_targets(config_loader: &ConfigLoader, targets: &[Target]) -> Result<()> {
-    output::header("Validating all targets...");
+    formatter::header("Validating all targets...");
 
     if targets.is_empty() {
-        output::warning("No targets configured");
+        formatter::warning("No targets configured");
         return Ok(());
     }
 
@@ -39,24 +39,24 @@ fn validate_all_targets(config_loader: &ConfigLoader, targets: &[Target]) -> Res
     for (name, result) in validation_results {
         match result {
             Ok(()) => {
-                output::item(Some("✓"), &name, Some("Valid"));
+                formatter::item(Some("✓"), &name, Some("Valid"));
             }
             Err(e) => {
-                output::item(Some("✗"), &name, Some("Invalid"));
+                formatter::item(Some("✗"), &name, Some("Invalid"));
                 errors.push((name, e));
             }
         }
     }
 
     if !errors.is_empty() {
-        output::header("\nValidation Errors:");
+        formatter::header("\nValidation Errors:");
         for (name, error) in &errors {
-            output::error(&format!("{}: {}", name, error));
+            formatter::error(&format!("{}: {}", name, error));
         }
     }
 
     if errors.is_empty() {
-        output::success("All templates validated successfully!");
+        formatter::success("All templates validated successfully!");
         Ok(())
     } else {
         anyhow::bail!("{} target(s) failed validation", errors.len())
@@ -68,7 +68,7 @@ fn validate_single_target(
     targets: &[Target],
     target_name: &str,
 ) -> Result<()> {
-    output::header(&format!("Validating target: {}", target_name));
+    formatter::header(&format!("Validating target: {}", target_name));
 
     let target = targets
         .iter()
@@ -79,10 +79,10 @@ fn validate_single_target(
 
     match validate_target_template(config_dir, target) {
         Ok(()) => {
-            output::success(&format!("Target '{}' is valid!", target_name));
-            output::item(Some("Template"), &target.template, None);
-            output::item(Some("Mode"), &format!("{:?}", target.mode), None);
-            output::item(
+            formatter::success(&format!("Target '{}' is valid!", target_name));
+            formatter::item(Some("Template"), &target.template, None);
+            formatter::item(Some("Mode"), &format!("{:?}", target.mode), None);
+            formatter::item(
                 Some("Output"),
                 if target.output.is_empty() {
                     "cache"
@@ -94,7 +94,7 @@ fn validate_single_target(
             Ok(())
         }
         Err(e) => {
-            output::error(&format!("Validation failed: {}", e));
+            formatter::error(&format!("Validation failed: {}", e));
             Err(e)
         }
     }

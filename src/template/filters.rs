@@ -123,7 +123,7 @@ pub fn rgb(value: &Value, args: &HashMap<String, Value>) -> TeraResult<Value> {
     let r = parse_hex_component(hex_code, 0..2, "Red")?;
     let g = parse_hex_component(hex_code, 2..4, "Green")?;
     let b = parse_hex_component(hex_code, 4..6, "Blue")?;
- 
+
     let output = format_rgb_output(r, g, b, alpha, toml_format);
     Ok(Value::String(output))
 }
@@ -221,7 +221,7 @@ mod tests {
         let result = rgb(&json!("FFFFFF"), &args);
         assert_eq!(result.unwrap(), json!("rgb(255, 255, 255)"));
     }
- 
+
     #[test]
     fn test_rgb_filter_toml_format() {
         // Basic TOML RGB
@@ -229,7 +229,7 @@ mod tests {
         args.insert("toml".to_string(), json!(true));
         let result = rgb(&json!("FF5733"), &args);
         assert_eq!(result.unwrap(), json!("[255, 87, 51]"));
- 
+
         // TOML RGBA
         let mut args = HashMap::new();
         args.insert("toml".to_string(), json!(true));

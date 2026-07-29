@@ -1,12 +1,6 @@
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-#[derive(Debug, Error)]
-pub enum ColorError {
-    #[error("Invalid hex color format: {0}")]
-    InvalidFormat(String),
-}
-
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Base16 {
     pub base00: String,
@@ -33,29 +27,7 @@ pub struct Base16 {
     pub base0f: String,
 }
 
-impl Base16 {
-    pub fn colors(&self) -> impl Iterator<Item = &str> {
-        [
-            self.base00.as_str(),
-            self.base01.as_str(),
-            self.base02.as_str(),
-            self.base03.as_str(),
-            self.base04.as_str(),
-            self.base05.as_str(),
-            self.base06.as_str(),
-            self.base07.as_str(),
-            self.base08.as_str(),
-            self.base09.as_str(),
-            self.base0a.as_str(),
-            self.base0b.as_str(),
-            self.base0c.as_str(),
-            self.base0d.as_str(),
-            self.base0e.as_str(),
-            self.base0f.as_str(),
-        ]
-        .into_iter()
-    }
-}
+
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Base30 {

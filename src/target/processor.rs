@@ -6,7 +6,7 @@ use std::time::Duration;
 use tera::Context;
 
 use crate::config::models::{Mode, Target};
-use crate::output::output;
+use crate::output::formatter;
 use crate::palette::models::Palette;
 use crate::template::engine::TemplateEngine;
 
@@ -43,7 +43,7 @@ impl TargetProcessor {
         fs::write(&output_path, rendered)
             .with_context(|| format!("Failed to write file: {}", output_path.display()))?;
 
-        output::item(Some("→"), &target.name, None);
+        formatter::item(Some("→"), &target.name, None);
 
         if !target.reload_cmd.is_empty() {
             self.handle_reload_command(&target.reload_cmd, &target.name, &palette.name)?;
@@ -96,13 +96,13 @@ impl TargetProcessor {
         let command = reload_cmd.replace("{theme}", theme_name);
 
         if command.trim().ends_with('&') {
-            output::info(&format!("Spawning background command for {}", target_name));
+            formatter::info(&format!("Spawning background command for {}", target_name));
             self.execute_background_command(&command)?;
-            output::success("Background command spawned");
+            formatter::success("Background command spawned");
         } else {
-            output::info(&format!("Executing reload command for {}", target_name));
+            formatter::info(&format!("Executing reload command for {}", target_name));
             self.execute_foreground_command(&command)?;
-            output::success("Application reloaded");
+            formatter::success("Application reloaded");
         }
 
         Ok(())
@@ -123,11 +123,11 @@ impl TargetProcessor {
             Ok(output) if output.status.success() => Ok(()),
             Ok(output) => {
                 let stderr = String::from_utf8_lossy(&output.stderr);
-                output::warning(&format!("Warning executing command: {}", stderr));
+                formatter::warning(&format!("Warning executing command: {}", stderr));
                 Ok(())
             }
             Err(e) => {
-                output::error(&format!("Could not execute command: {}", e));
+                formatter::error(&format!("Could not execute command: {}", e));
                 Ok(())
             }
         }
@@ -150,32 +150,7 @@ impl TargetProcessor {
         Ok(())
     }
 
-    pub fn cache_wallpaper(&self, wallpaper_path: &Path) -> Result<()> {
-        let cache_dir = dirs::cache_dir()
-            .context("Could not find cache directory")?
-            .join("themer");
 
-        fs::create_dir_all(&cache_dir).with_context(|| {
-            format!("Failed to create cache directory: {}", cache_dir.display())
-        })?;
-
-        let wallpaper_dest = cache_dir.join("wallpaper");
-
-        fs::copy(wallpaper_path, &wallpaper_dest).with_context(|| {
-            format!(
-                "Failed to copy wallpaper to cache: {}",
-                wallpaper_dest.display()
-            )
-        })?;
-
-        output::item(
-            Some("→"),
-            "Cached wallpaper",
-            Some(&wallpaper_dest.display().to_string()),
-        );
-
-        Ok(())
-    }
 }
 
 #[cfg(test)]

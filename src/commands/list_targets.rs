@@ -1,7 +1,7 @@
 use anyhow::Result;
 
 use crate::config::loader::ConfigLoader;
-use crate::output::output;
+use crate::output::formatter;
 
 pub fn execute(format: Option<&str>) -> Result<()> {
     let config_loader = ConfigLoader::new()?;
@@ -11,7 +11,7 @@ pub fn execute(format: Option<&str>) -> Result<()> {
         Some("plain") => output_plain(&config.targets),
         Some("json") => output_json(&config.targets)?,
         Some(unknown) => {
-            output::warning(&format!("Unknown format '{}', using default", unknown));
+            formatter::warning(&format!("Unknown format '{}', using default", unknown));
             output_default(&config.targets)
         }
         None => output_default(&config.targets),
@@ -32,27 +32,27 @@ fn output_json(targets: &[crate::config::models::Target]) -> Result<()> {
 }
 
 fn output_default(targets: &[crate::config::models::Target]) {
-    output::header("Configured targets:");
+    formatter::header("Configured targets:");
 
     if targets.is_empty() {
-        output::warning("No targets configured");
+        formatter::warning("No targets configured");
         return;
     }
 
     for target in targets {
-        output::item(Some("Target"), &target.name, Some(&target.template));
+        formatter::item(Some("Target"), &target.name, Some(&target.template));
 
         let mode_str = format!("Mode: {:?}", target.mode);
-        output::info(&mode_str);
+        formatter::info(&mode_str);
 
         if !target.output.is_empty() {
             let output_str = format!("Output: {}", target.output);
-            output::info(&output_str);
+            formatter::info(&output_str);
         }
 
         if !target.reload_cmd.is_empty() {
             let reload_str = format!("Reload: {}", target.reload_cmd);
-            output::info(&reload_str);
+            formatter::info(&reload_str);
         }
 
         println!();
